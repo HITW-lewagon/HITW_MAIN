@@ -25,6 +25,6 @@ def load_model():
 
 def load_model_local():
     load_dotenv()
-    model_local = '/Users/giovannicabral/hitw/xgbmodel.pkl'
+    model_local = '/xgbmodel.pkl'
     model = joblib.load(model_local)
     return model

@@ -15,6 +15,7 @@ scikit-learn==1.2.1
 google-cloud-storage
 db-dtypes
 pyarrow
+xgboost==1.6.2
 
 # prevent bq 3+ db-dtypes package error when running training from bq
 
