@@ -18,6 +18,7 @@ pyarrow
 xgboost==1.6.2
 streamlit
 
+
 # prevent bq 3+ db-dtypes package error when running training from bq
 
 python-dotenv
