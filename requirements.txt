@@ -17,7 +17,7 @@ db-dtypes
 pyarrow
 xgboost==1.6.2
 streamlit
-from streamlit_fontawesome import stc
+
 
 # prevent bq 3+ db-dtypes package error when running training from bq
 
