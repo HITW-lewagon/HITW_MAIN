@@ -12,24 +12,26 @@ st.markdown("""# Hungry index App""")
 
 
 # Mínimos e máximos dos nossos parâmetros
-hdi_min, hdi_max = 0.0, 1.0
+
 le_min, le_max = 0,120
 eys_min, eys_max = 0,20
 mys_min, mys_max =0.0,20.0
-gnipc_min, gnipc_max =500, 80000
-gdi_min, gdi_max =0.0,1.1
-gii_min, gii_max =0.0,1.0
-rpg_min, rpg_max =-10.0,10.0
+gnipc_min, gnipc_max =300, 90000
+mmr_min, mmr_max =0,2500
+abr_min, abr_max =0.0,205.0
+co2_prod_min, co2_prod_max =0.0,40.0
+mf_min, mf_max =0.0,100.0
+rpg_min, rpg_max =-12.0,20.0
 sub_region = ['Caribbean', 'Central America', 'Central Asia', 'Eastern Africa',
        'Eastern Asia', 'Eastern Europe', 'Melanesia', 'Middle Africa',
        'Northern Africa', 'Northern Europe', 'South America',
        'South-Eastern Asia', 'Southern Africa', 'Southern Asia',
        'Southern Europe', 'Western Africa', 'Western Asia']
 
-col1, col2,col3, col4 = st.columns(4)
+col1, col2,col3, col4, col5 = st.columns(5)
 
 with col1:
-    hdi = st.slider("Human Development Index (value)", hdi_min, hdi_max, value = 0.65)
+    mmr = st.slider("Maternal Mortality Ratio (deaths per 100,000 live births)", mmr_min, mmr_max, value = 1000)
     le = st.slider("Life Expectancy at Birth (years)", le_min, le_max, value = 68)
 
 
@@ -39,32 +41,34 @@ with col2:
 
 
 with col3:
-    gii = st.slider("Gender Inequality Index (value)", gii_min, gii_max, value = 0.43)
+    abr = st.slider("Adolescent Birth Rate (births per 1,000 women ages 15-19)", abr_min, abr_max, value = 200.0)
     rpg =  st.slider("Rural population growth (annual %)", rpg_min, rpg_max, value = 0.33)
 
 
 with col4:
     eys =  st.slider("Expected Years of Schooling (years)", eys_min, eys_max, value = 12)
-    gdi = st.slider("Gender Development Index (value)", gdi_min, gdi_max, value = 0.92)
+    co2_prod = st.slider("Carbon dioxide emissions per capita (production) (tonnes)", co2_prod_min, co2_prod_max, value = 4.88)
 
-selected_region = st.multiselect('Select the subregion:', sub_region,default = 'South America')
+with col5:
+    mf =  st.slider("Material footprint per capita (tonnes)", mf_min, mf_max, value = 9.8)
+    selected_region = st.multiselect('Select the subregion:', sub_region,default = 'South America')
 
-url = 'https://hitw4-acslzvyr6a-rj.a.run.app/predict'
+url = 'https://hitw5-acslzvyr6a-rj.a.run.app/predict'
 
-if url == 'https://hitw4-acslzvyr6a-rj.a.run.app/predict':
+if url == 'https://hitw5-acslzvyr6a-rj.a.run.app/predict':
 
     #st.markdown('Maybe you want to use your own API for the prediction, not the one provided by Le Wagon...')
-    data = {
-        'hdi': (float(hdi)/100),
-        'le': le,
-        'eys': eys,
-        'mys': mys,
-        'gnipc': gnipc,
-        'gdi': (float(gdi)/100),
-        'gii': (float(gii)/100),
-        'rpg': (float(rpg)/100),
-        'sub_region':selected_region
-    }
+    data = dict(le=le,
+                eys=eys,
+                mys=mys,
+                gnipc=gnipc,
+                mmr=mmr,
+                abr=abr,
+                co2_prod=co2_prod,
+                mf=mf,
+                rpg=rpg,
+                sub_region=selected_region
+                )
     response = requests.get(url=url,params = data)
     if response.status_code == 200:
         data = response.json()
@@ -99,7 +103,7 @@ st.write(f"Your position is {posicao}°")
 
 
 fig = px.choropleth(df, locations=df.index, locationmode="country names", color='GHI',
-                    color_continuous_scale='Viridis')
+                    color_continuous_scale='OrRd')
 
 # Configurar o layout do mapa
 fig.update_layout(
